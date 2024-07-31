@@ -1,0 +1,111 @@
+div.error {
+    color:red;
+}
+/* Ensure the navbar is a block-level element */
+.navaa {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start; /* Align items to the start (left) */
+    height: 80px;
+}
+
+/* Float the logo to the left */
+.kame {
+    float: left;
+    margin-right: 10px; /* Adjust as needed */
+    object-fit: contain; /* Ensures the image maintains its aspect ratio while fitting within the navbar */
+    width: auto;
+    margin-left: 40px;
+    object-fit: contain;
+    object-position: center ; /* Adjust the positioning as needed */
+    max-height: 65px; /* Adjust based on your navbar's height */
+    width: auto;
+    padding: 0;
+    margin-bottom: 0px;
+}
+.form-group.mb-3#uploadForm {
+    position: relative;
+    margin-top: -300px; /* Adjust this value based on the size of your form and buttons */
+}
+
+/* Clear floats for the navlist-right to ensure it starts on a new line */
+.navlist-right {
+    clear: both;
+    text-align: right; /* Align items to the right */
+    margin-left: auto;
+}
+
+/* Additional styling for the navbar items */
+
+
+/* Clearfix for the navbar */
+.navbar::after {
+    content: "";
+    display: table;
+    clear: both;
+}
+.escape:hover{
+    opacity: 0.5;
+}
+.custom-input {
+    flex: 0 1 200px; /* Adjust the width as needed */
+}
+.custom-label {
+    font-family: "Trebuchet MS", Verdana, Arial, sans-serif; /* Adjust font family as needed */
+    font-size: 16px; /* Adjust font size as needed */
+    color: #040507; /* Adjust color as needed */
+    display: block; /* Ensures the label appears above the input */
+}
+
+.logotext {
+    font-size: 45px; /* Adjust font size as needed */
+    color: black; /* Set the text color to black */
+    background-image: linear-gradient(to bottom, darkgreen, black);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-top: 6px;
+    margin-bottom: 0;
+
+}
+.logotext:hover{
+    opacity: 0.5;
+}
+.escape{
+    margin-right: 0;
+}
+.btn-green {
+     background-color: #28a745; /* Green */
+     border-color: #28a745; /* Green border */
+     color: white; /* Text color */
+ }
+.links{
+    color: black;
+    font-size: 20px;
+}
+.imgcar:hover{
+    opacity: 0.5;
+}
+.form-group.down
+ {
+    margin-bottom: -50px; /* This pushes the .form-group down */
+     /* Optional: Adds some space below the buttons */
+}
+.form-group.down {
+    padding-top: 20px; /* Adjust the value as needed */
+}
+.form-group.down {
+    position: relative;
+    top: 160px; /* Adjust the value as needed */
+}
+.badge-green {
+    background-color: #28a745; /* Bootstrap's green */
+    color: white;
+    font-size: 1.1em; /* Increase size */
+}
+.product-name {
+    font-size: 2em; /* Increase font size */
+    font-weight: bold; /* Make the text bold */
+    color: #333; /* Dark grey color */
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1); /* Subtle text shadow for depth */
+}
+

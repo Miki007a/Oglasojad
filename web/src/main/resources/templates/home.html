@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Classified Ads Website</title>
+  <!--  <link rel="stylesheet" href="style.css">-->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+          integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+          crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+          integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+          crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+          integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+          crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="/style.css">
+
+
+</head>
+<body>
+
+
+<nav class="navbar-expand-sm bg-success navbar-light navbar-expand-sm navv">
+  <div id="navbar" class="navlist-right">
+    <a sec:authorize="isAuthenticated()" href="/logout" >Одјави се</a>
+    <a sec:authorize="isAuthenticated()" href="/moj/oglasi" th:text="${username}"></a>
+    <a sec:authorize="isAnonymous()" href="/login">Најавете се</a>
+  </div>
+
+
+</nav>
+<header>
+  <form method="post" action="/oglas/list">
+    <div class="header">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-6">
+            <img src="/Kameleon.png" alt="Logo" class="logo mr-3">
+            <div class="search-bar">
+              <input type="text" name="nameSearch" placeholder="Пребарај огласи...">
+              <button type="submit">Пребарај</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+
+
+  <nav  class="navbar-expand-sm bg-success navbar-light navbar-expand-sm nav2">
+
+    <div th:each="cat:${categories}">
+    <div th:if="${cat.name.equals('Автомобили')}">
+      <a th:href="@{'/oglas/list/{id}' (id=${cat.id})}" th:name="categoryId" th:value="${cat.id}">Автомобили</a>
+    </div>
+    <div th:if="${cat.name.equals('Живеалишта')}">
+      <a th:href="@{'/oglas/list/{id}' (id=${cat.id})}" th:name="categoryId" th:value="${cat.id}">Живеалишта</a>
+    </div>
+    <div th:if="${cat.name.equals('Услуги')}">
+      <a th:href="@{'/oglas/list/{id}' (id=${cat.id})}" th:name="categoryId" th:value="${cat.id}">Услуги</a>
+    </div>
+    <div  th:if="${cat.name.equals('Работа')}">
+      <a th:href="@{'/oglas/list/{id}' (id=${cat.id})}" th:name="categoryId" th:value="${cat.id}">Работа</a>
+    </div>
+    <div  th:if="${cat.name.equals('Електроника')}">
+      <a th:href="@{'/oglas/list/{id}' (id=${cat.id})}" th:name="categoryId" th:value="${cat.id}">Електроника</a>
+    </div>
+    <div th:if="${cat.name.equals('Дом и семејство')}">
+      <a th:href="@{'/oglas/list/{id}' (id=${cat.id})}" th:name="categoryId" th:value="${cat.id}">Дом и семејство</a>
+    </div>
+    </div>
+  </nav>
+
+
+
+</header>
+<div class="main-container">
+
+  <div class="map-section">
+
+    <h3 class="map-title">Одбери според град</h3>
+
+    <img src="Map.png" usemap="#image-map">
+
+    <map name="image-map">
+      <area class="area-hover" target="" alt="Скопје" title="Скопје" th:href="@{'/oglas/list/city/{id}' (id='Скопје')}" coords="158,79,162,90,162,107,176,118,184,140,203,155,229,149,252,134,269,134,276,121,286,109,259,93,240,97,227,83,217,73,218,58,217,42,198,40" shape="poly">
+      <area target="" alt="Куманово" title="Куманово" th:href="@{'/oglas/list/city/{id}' (id='Куманово')}" coords="228,41,256,41,280,26,310,20,334,26,329,53,312,69,310,83,312,92,295,95,285,106,263,92,246,88,230,81,222,64" shape="poly">
+      <area target="" alt="Крива Паланка" title="Крива Паланка" th:href="@{'/oglas/list/city/{id}' (id='Крива Паланка')}" coords="338,30,331,54,340,65,369,67,393,74,407,70,420,60,409,45,400,29,377,12,357,17" shape="poly">
+      <area target="" alt="Кратово" title="Кратово" th:href="@{'/oglas/list/city/{id}' (id='Кратово')}" coords="328,60,344,67,356,71,368,70,389,75,392,82,381,85,368,90,356,86,338,89,326,90,314,84,315,74" shape="poly">
+      <area target="" alt="Делчево" title="Делчево" th:href="@{'/oglas/list/city/{id}' (id='Делчево')}" coords="423,64,410,70,419,80,430,100,440,100,451,106,465,111,465,126,474,134,488,136,495,125,490,104,485,94,458,84" shape="poly">
+      <area target="" alt="Кочани" title="Кочани" th:href="@{'/oglas/list/city/{id}' (id='Кочани')}" coords="408,78,395,76,389,92,375,105,366,120,385,133,409,139,415,124,418,103,429,104,419,87" shape="poly">
+      <area target="" alt="Виница" title="Виница" th:href="@{'/oglas/list/city/{id}' (id='Виница')}" coords="458,150,438,148,416,141,416,124,421,108,438,104,454,110,464,129,462,118" shape="poly">
+      <area target="" alt="Берово" title="Берово" th:href="@{'/oglas/list/city/{id}' (id='Берово')}" coords="496,130,486,140,463,136,463,144,460,150,454,156,457,170,461,178,482,187,501,194,511,188,519,176,521,168,512,159" shape="poly">
+      <area target="" alt="Струмица" title="Струмица" th:href="@{'/oglas/list/city/{id}' (id='Струмица')}" coords="504,196,485,190,461,180,451,180,456,194,454,200,442,195,432,199,429,216,422,221,423,236,426,252,431,265,444,268,464,266,485,262,506,262,506,242,510,233,509,218" shape="poly">
+      <area target="" alt="Валандово" title="Валандово" th:href="@{'/oglas/list/city/{id}' (id='Валандово')}" coords="467,279,450,287,428,299,418,272,401,255,386,239,397,227,414,223,422,241,423,258,432,269,446,272" shape="poly">
+      <area target="" alt="Гевгелија" title="Гевгелија" th:href="@{'/oglas/list/city/{id}' (id='Гевгелија')}" coords="392,257,388,270,379,280,376,299,376,315,392,316,426,315,440,316,446,304,457,310,464,290,451,288,437,295,424,299,421,288,413,272,410,266" shape="poly">
+      <area target="" alt="Кавадарци" title="Кавадарци" th:href="@{'/oglas/list/city/{id}' (id='Кавадарци')}" coords="380,262,353,257,346,242,333,228,329,211,321,213,317,218,302,224,287,225,288,236,294,258,306,281,310,291,317,297,314,309,315,314,334,312,342,312,357,307,367,303,376,286" shape="poly">
+      <area target="" alt="Прилеп" title="Прилеп" th:href="@{'/oglas/list/city/{id}' (id='Прилеп')}" coords="304,319,287,310,194,258,177,210,188,205,203,187,216,202,234,213,256,224,278,215,285,224,291,261,301,273,306,283,312,294,311,304" shape="poly">
+      <area target="" alt="Битола" title="Битола" th:href="@{'/oglas/list/city/{id}' (id='Битола')}" coords="296,320,194,260,141,294,166,355,162,371,171,380,206,370,235,370,237,379,263,366,281,360,295,343" shape="poly">
+      <area target="" alt="Ресен" title="Ресен" th:href="@{'/oglas/list/city/{id}' (id='Ресен')}" coords="158,378,118,384,110,368,96,367,88,352,98,311,123,281,138,300,154,337,162,352" shape="poly">
+      <area target="" alt="Охрид" title="Охрид" th:href="@{'/oglas/list/city/{id}' (id='Охрид')}" coords="89,360,82,370,64,366,58,326,64,292,72,264,60,254,51,231,71,224,96,225,102,248,117,271,120,278,107,290,94,302,92,312,88,337" shape="poly">
+      <area target="" alt="Струга" title="Струга" th:href="@{'/oglas/list/city/{id}' (id='Струга')}" coords="55,327,38,323,32,301,18,267,28,255,23,233,46,230,56,252,67,265,61,299" shape="poly">
+      <area target="" alt="Дебар" title="Дебар" th:href="@{'/oglas/list/city/{id}' (id='Дебар')}" coords="28,182,54,196,56,204,48,223,24,228,12,217" shape="poly">
+      <area target="" alt="Гостивар" title="Гостивар" th:href="@{'/oglas/list/city/{id}' (id='Гостивар')}" coords="78,125,94,131,134,129,140,139,134,150,131,171,96,169,80,171,82,185,81,197,58,206,48,185,27,179,26,159,36,149,38,133" shape="poly">
+      <area target="" alt="Тетово" title="Тетово" th:href="@{'/oglas/list/city/{id}' (id='Тетово')}" coords="151,52,128,52,111,64,88,78,76,84,77,116,92,127,127,126,142,138,168,128,172,118" shape="poly">
+      <area target="" alt="Македонски Брод" title="Македонски Брод" th:href="@{'/oglas/list/city/{id}' (id='Македонски Брод')}" coords="156,133,182,138,202,163,195,193,174,214,153,220,137,212,147,199,150,187,142,174,134,165,142,144" shape="poly">
+      <area target="" alt="Кичево" title="Кичево" th:href="@{'/oglas/list/city/{id}' (id='Кичево')}" coords="87,172,112,168,127,172,141,178,143,192,134,204,136,216,147,219,146,228,137,238,122,242,105,246,92,218,76,220,61,220,55,219,66,211,72,208,78,204,85,198" shape="poly">
+      <area target="" alt="Демир Хисар" title="Демир Хисар" th:href="@{'/oglas/list/city/{id}' (id='Демир Хисар')}" coords="146,241,171,258,184,268,162,281,144,294,132,281,108,262,119,251" shape="poly">
+      <area target="" alt="Крушево" title="Крушево" th:href="@{'/oglas/list/city/{id}' (id='Крушево')}" coords="146,232,157,223,172,219,178,230,190,240,192,256,188,260,169,250,155,242" shape="poly">
+      <area target="" alt="Велес" title="Велес" th:href="@{'/oglas/list/city/{id}' (id='Велес')}" coords="226,150,247,150,258,136,269,138,278,120,287,116,300,132,298,150,297,158,306,174,315,180,322,174,326,181,326,198,321,208,310,218,289,222,272,211,264,216,252,217,241,210,225,203,217,194,207,187,200,182,203,164,214,157" shape="poly">
+      <area target="" alt="Свети Николе" title="Свети Николе" th:href="@{'/oglas/list/city/{id}' (id='Свети Николе')}" coords="298,95,313,94,326,90,339,104,348,119,341,138,334,146,322,153,312,159,318,167,313,171,304,164,300,145,290,114" shape="poly">
+      <area target="" alt="Пробиштип" title="Пробиштип" th:href="@{'/oglas/list/city/{id}' (id='Пробиштип')}" coords="330,91,353,89,370,91,391,85,379,101,367,113,369,125,356,121,344,110" shape="poly">
+      <area target="" alt="Штип" title="Штип" th:href="@{'/oglas/list/city/{id}' (id='Штип')}" coords="349,124,385,136,413,142,410,157,407,164,394,162,389,173,391,180,388,187,370,194,355,181,344,178,333,170,328,163,324,158,338,157,342,149,343,140" shape="poly">
+      <area target="" alt="Неготино" title="Неготино" th:href="@{'/oglas/list/city/{id}' (id='Неготино')}" coords="385,254,366,255,348,241,332,220,328,202,332,182,328,175,347,180,363,187,376,196,388,202,394,214,388,226,389,235" shape="poly">
+      <area target="" alt="Радовиш" title="Радовиш" th:href="@{'/oglas/list/city/{id}' (id='Радовиш')}" coords="416,147,432,146,446,147,452,158,458,173,454,178,451,191,434,193,428,205,425,218,413,222,397,222,393,205,383,192,393,186,400,182,393,173,397,168" shape="poly">
+    </map>
+  </div>
+  <div class="post-ad-section">
+    <section class="post-ad">
+      <h2>Постирај нов оглас</h2>
+      <form action="/oglas/add" method="get">
+        <label for="title">Наслов:</label>
+        <input type="text" id="title" name="name" required>
+        <label for="description">Опис:</label>
+        <textarea id="description" name="description" required></textarea>
+        <label for="category">Категорија:</label>
+        <select id="category" name="categories" multiple="multiple">
+          <option th:each="cat:${categories}" th:value="${cat.id}" th:text="${cat.name}" >Селектирај категорија</option>
+
+        </select>
+        <button type="submit">Постирај оглас</button>
+      </form>
+    </section>
+  </div>
+</div>
+
+<footer>
+  <p>&copy;  2024 Класифицирана страна за маркетинг</p></footer>
+</body>
+</html>

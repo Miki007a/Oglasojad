@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Classified Ads Website</title>
+  <!--  <link rel="stylesheet" href="style.css">-->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+          integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+          crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+          integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+          crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+          integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+          crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="/style.css">
+  <link rel="stylesheet" href="/main.css">
+  <style>
+    .product-card {
+      border: 1px solid #ddd;
+      padding: 15px;
+      margin-bottom: 20px;
+      text-align: center;
+      transition: transform .2s;
+    }
+    .product-card:hover {
+      transform: scale(1.05);
+    }
+    .product-card img {
+      width: 100%;
+      height: auto;
+    }
+    .product-card h3 {
+      margin: 15px 0;
+    }
+    .product-card .price {
+      color: #333;
+      font-weight: bold;
+    }
+    .product-card .description {
+      color: #777;
+    }
+    .product-card .explore-link {
+      display: inline-block;
+      margin-top: 10px;
+      padding: 10px 20px;
+      background-color: #007bff;
+      color: white;
+      text-decoration: none;
+      border-radius: 5px;
+      transition: background-color .2s;
+    }
+    .product-card .explore-link:hover {
+      background-color: #0056b3;
+    }
+  </style>
+
+</head>
+
+<body>
+
+<nav class="navbar-expand-sm bg-success navbar-light navbar-expand-sm navv navaa">
+  <a class="escape" href="/home">
+    <img src="/Kameleon.png" alt="Logo" class="logo mr-3 kame">
+  </a>
+  <a href="/home">
+    <h1 class="logotext">Огласојад</h1></a>
+  <div id="navbar" class="navlist-right">
+    <a sec:authorize="isAnonymous()" href="/login">Најавете се</a>
+    <a sec:authorize="isAuthenticated()" href="/logout" >Одјави се</a>
+    <a sec:authorize="isAuthenticated()" href="/moj/oglasi" th:text="${username}"></a>
+  </div>
+
+
+</nav>
+
+
+
+<div class="flex-container">
+
+<div class="container" style="height: 80%">
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+      <img th:src="${product.imagePath}" alt="Product Image" class="img-fluid">
+    </div>
+    <div class="col-md-6">
+      <div class="card">
+        <div class="card-body d-flex flex-column align-items-center">
+          <h5 class="card-title product-name" style="text-align: center" th:text="${product.name}"></h5>
+          <p class="card-text" style="font-weight: bold; font-size: 1.2em; color: #28a745;">
+            <span th:text="${product.price}"></span> <span style="color: #6c757d;">MKD</span>
+          </p>
+          <div class="mt-2 d-flex align-items-center"> <!-- Use flexbox for alignment -->
+            <span class="badge badge-green mr-2" th:text="${product.city}"></span> <!-- Use custom green badge -->
+            <span class="badge badge-green mr-2" th:text="${product.date}"></span> <!-- Use custom green badge -->
+            <div th:each="cat:${product.categories}">
+              <span class="badge badge-green mr-2" th:text="${cat.name}"></span> <!-- Use custom green badge -->
+            </div>
+          </div>
+          <p class="card-text mt-3" th:text="${product.description}"></p>
+          <div class="mt-auto">
+            <a href="/home" class="btn btn-primary btn-green">Врати се дома</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+
+<footer>
+  <p>&copy;  2024 Класифицирана страна за маркетинг</p></footer>
+</body>
+
+</html>

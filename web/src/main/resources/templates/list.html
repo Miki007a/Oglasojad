@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Classified Ads Website</title>
+    <!--  <link rel="stylesheet" href="style.css">-->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+            integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+            crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+            integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+            crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+            integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+            crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="/style.css">
+<link rel="stylesheet" href="/main.css">
+
+</head>
+<body>
+
+<nav class="navbar-expand-sm bg-success navbar-light navbar-expand-sm navv navaa">
+ <a class="escape" href="/home">
+        <img src="/Kameleon.png" alt="Logo" class="logo mr-3 kame">
+ </a>
+    <a href="/home">
+        <h1 class="logotext">Огласојад</h1></a>
+    <div id="navbar" class="navlist-right">
+        <a sec:authorize="isAnonymous()" href="/login">Најавете се</a>
+        <a sec:authorize="isAuthenticated()" href="/logout" >Одјави се</a>
+        <a sec:authorize="isAuthenticated()" href="/moj/oglasi" th:text="${username}"></a>
+    </div>
+
+
+</nav>
+
+
+<div  class="container">
+    <h1 th:if="${mojoglas!=null}" style="text-align: center">Мои огласи</h1>
+    <form id="filter-form" method="get" action="/oglas/list/filter" class="mb-4">
+        <!-- Existing form fields -->
+        <div th:if="${mojoglas==null}" class="form-row">
+
+            <div class="form-group">
+
+                <input id="nameSearch" type="text" placeholder="Име..." name="nameSearch" th:value="${nameSearch != null ? nameSearch : ''}" class="form-control"/>
+            </div>
+            <div class="form-group">
+
+                <select id="categoryId" name="categoryId" class="form-control">
+                    <option value="">Сите категории</option>
+                    <option th:each="cat:${categories}" th:value="${cat.id}" th:text="${cat.name}" th:selected="${cat.id == categoryId}">[cat.name]</option>
+                </select>
+            </div>
+            <div class="form-group">
+
+                <input id="city" type="text" name="city" placeholder="Град..." th:value="${city != null ? city : ''}" class="form-control"/>
+            </div>
+
+        <button id="filter" type="submit" class="btn btn-success baton" name="page" th:value="${0}">Филтрирај</button>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                   <th ></th>
+                    <th>Наслов</th>
+                    <th>Цена</th>
+                    <th>Град</th>
+                    <th>Категории</th>
+                    <th>Креатор</th>
+                    <th>Опис</th>
+                </tr>
+                </thead>
+
+                <tbody>
+                <tr th:each="product : ${productPage.content}">
+                  <td style="width: 750px;" class="custom-image">
+                      <a th:href="@{'/oglas/pokazhi/' + ${product.id}}">
+                          <img th:src="@{${product.imagePath}}" alt="Car">
+                      </a>
+                  </td>
+                    <td> <a class="links" th:href="@{'/oglas/pokazhi/' + ${product.id}}">
+                        <span th:text="${product.name}"></span>
+                    </a></td>
+                    <td ><a class="links" th:href="@{'/oglas/pokazhi/' + ${product.id}}">
+                        <span th:text="${product.price}+' '"></span><span>MKD</span>
+                    </a></td>
+                    <td ><a class="links" th:href="@{'/oglas/pokazhi/' + ${product.id}}">
+                        <span th:text="${product.city}"></span>
+                    </a></td>
+                    <td>
+                        <a class="links" th:href="@{'/oglas/pokazhi/' + ${product.id}}">
+                        <ul class="list-unstyled">
+
+                            <li th:each="cat:${product.categories}" th:text="${cat.name}"></li>
+                        </ul></a>
+                    </td>
+                    <td ><a class="links" th:href="@{'/oglas/pokazhi/' + ${product.id}}">
+                        <span th:text="${product?.creator?.getName()}"></span>
+                    </a></td>
+                    <td ><a class="links" th:href="@{'/oglas/pokazhi/' + ${product.id}}">
+                        <span class="truncate-description" th:text="${product.description}"></span>
+                    </a></td>
+
+                    <form action=""></form>
+                    <td>
+
+                        <form th:if="${mojoglas!=null}" th:method="POST"
+                              th:action="@{${mojoglas!=null} ? '/oglas/' + ${product.id} + '/delete' + '?mojoglas=mojoglas': '/oglas/' + ${product.id} + '/delete'}"
+                              sec:authorize="isAuthenticated()" class="d-inline-block">
+                            <button type="submit" class="btn btn-danger">Delete</button>
+                        </form>
+                        <form th:if="${mojoglas==null}" th:method="POST"
+                              th:action="@{${mojoglas!=null} ? '/oglas/' + ${product.id} + '/delete' + '?mojoglas=mojoglas': '/oglas/' + ${product.id} + '/delete'}"
+                              sec:authorize="hasRole('ROLE_ADMIN')" class="d-inline-block">
+                            <button type="submit" class="btn btn-danger">Delete</button>
+                        </form>
+                        <a th:if="${mojoglas!=null}" th:href="@{${mojoglas!=null} ? '/oglas/' + ${product.id} + '/edit' + '?mojoglas=mojoglas': '/oglas/' + ${product.id} + '/edit'}"
+                           class="btn btn-primary d-inline-block"
+                           sec:authorize="isAuthenticated()">Edit</a>
+
+                        <a th:if="${mojoglas==null}" th:href="@{${mojoglas!=null} ? '/oglas/' + ${product.id} + '/edit' + '?mojoglas=mojoglas': '/oglas/' + ${product.id} + '/edit'}"
+                           class="btn btn-primary d-inline-block"
+                           sec:authorize="hasRole('ROLE_ADMIN')">Edit</a>
+                    </td>
+
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+
+<input type="hidden" name="mojoglas" th:value="${mojoglas}!=null ? 'mojoglas':''">
+
+
+        <div class="container marg">
+            <nav aria-label="Page navigation">
+                <ul class="pagination justify-content-center">
+                    <!-- Previous page link -->
+                    <li class="page-item ${productPage.first ? 'disabled' : ''}">
+                        <button class="page-link" type="submit" name="page" th:value="${productPage.number - 1}" th:if="${productPage.hasPrevious()}" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                        </button>
+                    </li>
+                    <!-- Page numbers -->
+                    <li class="page-item" th:each="pageNumber : ${#numbers.sequence(0, productPage.totalPages - 1)}" th:class="${pageNumber.equals(productPage.number) ? 'active' : ''}">
+                        <button type="submit" class="page-link" name="page" th:value="${pageNumber}" th:text="${pageNumber + 1}"></button>
+                    </li>
+                    <!-- Next page link -->
+                    <li class="page-item ${productPage.last ? 'disabled' : ''}">
+                        <button class="page-link" type="submit" name="page" th:value="${productPage.number + 1}" th:if="${productPage.hasNext()}" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                        </button>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </form>
+</div>
+
+<footer>
+    <p>&copy;  2024 Класифицирана страна за маркетинг</p></footer>
+
+
+
+
+
+<!-- Display products -->
+
+
+</body>
+</html>

@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Classified Ads Website</title>
+    <!--  <link rel="stylesheet" href="style.css">-->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+            integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+            crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+            integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+            crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+            integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+            crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="/style.css">
+    <link rel="stylesheet" href="/main.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
+        // Update the hidden fields when the name input changes
+        $('#name').on('input', function() {
+            $('#hiddenName').val($(this).val());
+        });
+
+        // Update the hidden fields when the price input changes
+        $('#price').on('input', function() {
+            $('#hiddenPrice').val($(this).val());
+        });
+        $('#description').on('input', function() {
+                $('#hiddenDescription').val($(this).val());
+            });
+        $('#city').on('input', function() {
+                $('#hiddenCity').val($(this).val());
+            });
+
+            // Add more event listeners for other fields as needed
+    });
+
+    </script>
+
+</head>
+<body>
+
+
+<nav class="navbar-expand-sm bg-success navbar-light navbar-expand-sm navv navaa">
+    <a class="escape" href="/home">
+        <img src="/Kameleon.png" alt="Logo" class="logo mr-3 kame">
+
+    </a>
+    <a href="/home">
+        <h1 class="logotext">Огласојад</h1></a>
+    <div id="navbar" class="navlist-right">
+        <a sec:authorize="isAuthenticated()" href="/logout" >Одјави се</a>
+        <a sec:authorize="isAuthenticated()" href="/moj/oglasi" th:text="${username}"></a>
+    </div>
+
+
+</nav>
+
+<header>
+    <h1 th:if="${product==null}">Внеси оглас</h1>
+    <form th:action="@{${product!=null} ? '/oglas/' + ${product.id} : '/oglas/add' }" th:method="POST" class="needs-validation forma" novalidate>
+ <input name="user" th:value="${username}" type="hidden">
+    <div class="form-group mb-3">
+        <label for="name" class="form-label custom-label">Наслов</label>
+        <input type="text" id="name" name="name" class="form-control custom-input normalize" th:value="${product!=null?product.name:name}" required>
+        <div class="invalid-feedback">
+            Please provide a name.
+        </div>
+    </div>
+    <div class="form-group mb-3">
+
+            <label for="price" class="form-label custom-label">Цена</label>
+            <input type="number" id="price" name="price" class="form-control custom-input normalize" th:value="${product!=null?product.price:price}" required>
+            <div class="invalid-feedback">
+                Please provide a price.
+            </div>
+
+    </div>
+    <div class="form-group mb-3">
+
+            <label for="description" class="form-label custom-label">Опис</label>
+        <textarea id="description" name="description" th:text="${product!=null ? product.description:description}" th:value="${product!=null ? product.description:description}" class="form-control custom-input taller-input normalize" rows="4" required></textarea>
+            <div class="invalid-feedback">
+                Please provide a description.
+        </div>
+    </div>
+    <div class="form-group mb-3">
+
+            <label for="city" class="form-label custom-label">Град</label>
+            <input type="text" id="city" name="city" class="form-control custom-input normalize" th:value="${product!=null?product.city:city}" required>
+            <div class="invalid-feedback">
+                Please provide a city.
+
+        </div>
+    </div>
+    <div class="form-group mb-3">
+
+            <label class="form-label custom-label">Категории</label>
+            <select id="categories" name="categories" class="form-control custom-input category" multiple="multiple" size="5">
+                <option th:each="cat:${categories}" th:value="${cat.id}" th:text="${cat.name}" th:selected="${product!=null?product?.categories?.contains(cat):categoryId.contains(cat.id)}"></option>
+            </select>
+
+    </div>
+
+    <div class="form-group down">
+        <div class="col-md-6 mx-auto">
+            <button id="submit" type="submit" class="btn btn-primary btn btn-lg btn-green ">Внеси</button>
+            <div class="invalid-feedback">
+                Please fill out the form.
+            </div>
+            <a id="back" href="/home" type="button" class="btn btn-secondary">Назад на дома</a>
+        </div>
+    </div>
+        <input type="hidden" name="imagePath" th:value="${imagePath!=null} ? ${imagePath} : ''">
+<form action=""></form>
+        <div class="form-group mb-3">
+            <form method="post" action=/upload enctype="multipart/form-data">
+                <input type="hidden" id="hiddenName" name="hiddenName" th:value="${name!=null ?name:''}">
+                <input type="hidden" id="hiddenPrice" name="hiddenPrice">
+                <input type="hidden" id="hiddenDescription" name="hiddenDescription" th:value="${description!=null ? description :''}">
+                <input type="hidden" id="hiddenCategoryId" name="hiddenCategoryId" th:if="${categoryId!=null}" th:each="cat:${categoryId}" th:value="${cat}">
+                <input type="hidden" id="hiddenCity" name="hiddenCity">
+
+                <div class="button-wrap">
+                    <label class="button" for="imageUpload">Select File</label>
+                    <input type="file" id="imageUpload" name="imageUpload" class="form-control-file" required>
+                </div>
+                <div class="invalid-feedback">
+                    Please select an image.
+                </div>
+                <br>
+                <button type="submit" class="btn btn-primary btn btn-lg btn-green">Upload</button>
+                <div th:if="${imageSuccess!=null}" th:text="${imageSuccess}"></div>
+            </form>
+        </div>
+
+
+</form>
+
+
+
+</header>
+<footer>
+    <p>&copy;  2024 Класифицирана страна за маркетинг</p></footer>
+
+</body>
+</html>

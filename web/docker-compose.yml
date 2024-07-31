@@ -1,0 +1,30 @@
+version: "3"
+services:
+  oglasojad-db:
+    image: "postgres"
+    restart: always
+    container_name: "oglasojad-db"
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=${DB_PASSWORD:-postgres}
+      - POSTGRES_DB=oglasojad-db
+    ports:
+      - "54322:5432"
+    volumes:
+      - init:/var/lib/postgresql/data
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+
+  oglasojad:
+    ports:
+      - "8080:8080"
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: oglasojad
+    environment:
+      - spring.datasource.url=jdbc:postgresql://oglasojad-db:5432/oglasojad-db
+      - spring.datasource.password=${DB_PASSWORD:-postgres}
+      - spring.jpa.show-sql=false
+volumes:
+  init:
+
