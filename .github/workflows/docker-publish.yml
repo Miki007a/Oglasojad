@@ -27,4 +27,4 @@ jobs:
         with:
           context: .
           push: true
-          tags: miki023/Oglasojad:latest
+          tags: miki023/oglasojad:latest
