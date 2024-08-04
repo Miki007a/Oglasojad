@@ -1,0 +1,58 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: oglasojad-db
+  namespace: oglasojad
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: oglasojad-db
+  template:
+    metadata:
+      labels:
+        app: oglasojad-db
+    spec:
+      containers:
+      - name: oglasojad-db
+        image: postgres:latest
+        env:
+        - name: POSTGRES_USER
+          value: "postgres"
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: oglasojad-secret
+              key: POSTGRES_PASSWORD
+        - name: POSTGRES_DB
+          value: "oglasojad-db"
+        ports:
+        - containerPort: 5432
+        volumeMounts:
+        - mountPath: /var/lib/postgresql/data
+          name: postgres-storage
+        - mountPath: /docker-entrypoint-initdb.d/init.sql
+          subPath: init.sql
+          name: init-script
+      volumes:
+      - name: postgres-storage
+        persistentVolumeClaim:
+          claimName: postgres-pvc
+      - name: init-script
+        configMap:
+          name: init-script
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: oglasojad-db
+  namespace: oglasojad
+spec:
+  type: ClusterIP
+  selector:
+    app: oglasojad-db
+  ports:
+  - protocol: TCP
+    port: 5432
+    targetPort: 5432
+

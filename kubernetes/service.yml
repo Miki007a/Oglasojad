@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: oglasojad-service
+  namespace: oglasojad
+spec:
+  selector:
+    app: oglasojad
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8080
