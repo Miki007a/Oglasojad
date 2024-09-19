@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: oglasojad-db
+  namespace: oglasojad
+spec:
+  clusterIP: None
+  selector:
+    app: oglasojad-db
+  ports:
+    - port: 5432
+      targetPort: 5432
+
