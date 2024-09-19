@@ -18,9 +18,15 @@ spec:
         image: miki023/oglasojad:latest
         env:
           - name: spring.datasource.url
-            value: "jdbc:postgresql://oglasojad-db.oglasojad.svc.cluster.local:5432/oglasojad-db"
+            valueFrom:
+              configMapKeyRef:
+                name: oglasojad-config
+                key: DATABASE_URL
           - name: spring.datasource.username
-            value: "postgres"
+            valueFrom:
+              configMapKeyRef:
+                name: oglasojad-config
+                key: POSTGRES_USERNAME
           - name: spring.datasource.password
             valueFrom:
               secretKeyRef:
@@ -28,6 +34,6 @@ spec:
                 key: POSTGRES_PASSWORD
           - name: spring.jpa.show-sql
             value: "false"
-
         ports:
           - containerPort: 8080
+

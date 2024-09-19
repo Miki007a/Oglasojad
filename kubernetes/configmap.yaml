@@ -6,5 +6,6 @@ metadata:
 data:
   APP_ENV: "production"
   APP_DEBUG: "false"
-  DATABASE_URL: "jdbc:postgresql://oglasojad-postgres:5432/oglasojad-db"
+  DATABASE_URL: "jdbc:postgresql://oglasojad-db.oglasojad.svc.cluster.local:5432/oglasojad-db"
+  POSTGRES_USERNAME: "postgres"
 
