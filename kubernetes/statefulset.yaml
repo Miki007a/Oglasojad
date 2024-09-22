@@ -22,17 +22,31 @@ spec:
           volumeMounts:
             - name: postgres-storage
               mountPath: /var/lib/postgresql/data
+            - name: init-scripts                       # Volume mount for the init script
+              mountPath: /docker-entrypoint-initdb.d   # PostgreSQL auto-runs SQL scripts from here
           env:
             - name: POSTGRES_USER
-              value: "postgres"
+              valueFrom:
+                configMapKeyRef:
+                  name: oglasojad-config
+                  key: POSTGRES_USERNAME
             - name: POSTGRES_PASSWORD
-              value: "postgres"
+              valueFrom:
+                secretKeyRef:
+                  name: oglasojad-secret
+                  key: POSTGRES_PASSWORD
             - name: POSTGRES_DB
-              value: "oglasojad-db"
+              valueFrom:
+                configMapKeyRef:
+                  name: oglasojad-config
+                  key: DB_NAME
       volumes:
         - name: postgres-storage
           persistentVolumeClaim:
             claimName: postgres-storage-postgres-0
+        - name: init-scripts                           # Volume for the ConfigMap containing the init script
+          configMap:
+            name: postgres-init-scripts
   volumeClaimTemplates:
     - metadata:
         name: postgres-storage
@@ -41,3 +55,4 @@ spec:
         resources:
           requests:
             storage: 1Gi
+
