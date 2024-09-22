@@ -22,8 +22,8 @@ spec:
           volumeMounts:
             - name: postgres-storage
               mountPath: /var/lib/postgresql/data
-            - name: init-scripts                       # Volume mount for the init script
-              mountPath: /docker-entrypoint-initdb.d   # PostgreSQL auto-runs SQL scripts from here
+            - name: init-script
+              mountPath: /docker-entrypoint-initdb.d
           env:
             - name: POSTGRES_USER
               valueFrom:
@@ -44,9 +44,9 @@ spec:
         - name: postgres-storage
           persistentVolumeClaim:
             claimName: postgres-storage-postgres-0
-        - name: init-scripts                           # Volume for the ConfigMap containing the init script
+        - name: init-script
           configMap:
-            name: postgres-init-scripts
+            name: mysql-initdb-config
   volumeClaimTemplates:
     - metadata:
         name: postgres-storage

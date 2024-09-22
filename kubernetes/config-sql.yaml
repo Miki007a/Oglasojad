@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: mysql-initdb-config
+  namespace: oglasojad
+data:
+  initdb.sql: |
+    CREATE TABLE IF NOT EXISTS category (
+        id SERIAL PRIMARY KEY,
+        name VARCHAR(255) UNIQUE NOT NULL,
+        description TEXT
+    );
+
+    INSERT INTO category (name, description) VALUES
+      ('Живеалиште', 'Category for living accommodations'),
+      ('Работа', 'Category for job postings'),
+      ('Автомобили', 'Category for vehicles'),
+      ('Електроника', 'Category for electronics')
+      ON CONFLICT (name) DO NOTHING;
+
